@@ -1,8 +1,11 @@
 using BookStore.User.Context;
 using BookStore.User.Interface;
 using BookStore.User.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace BookStore.User
 {
@@ -24,7 +27,7 @@ namespace BookStore.User
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Using Authorization header with the beare schema",
+                    Description = "Using Authorization",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
@@ -51,6 +54,25 @@ namespace BookStore.User
             });
             //Service for interface and sercice
             builder.Services.AddTransient<IUserService, UserService>();
+
+            //JWt Token Service
+            builder.Services.AddAuthentication(au =>
+            {
+                au.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                au.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(option =>
+            {
+                option.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer=false,
+                    ValidateAudience=false,
+                    ValidateLifetime=true,
+                    ValidateIssuerSigningKey=true,
+                    
+                    IssuerSigningKey= new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) 
+                };
+
+            });
 
             var app = builder.Build();
 
