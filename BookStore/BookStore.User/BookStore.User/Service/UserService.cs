@@ -1,9 +1,11 @@
 ﻿using BookStore.User.Context;
+using BookStore.User.EmailService;
 using BookStore.User.Entity;
 using BookStore.User.Interface;
 using BookStore.User.Model;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Claims;
 using System.Text;
 
@@ -78,7 +80,7 @@ namespace BookStore.User.Service
         {
             try
             {
-                var user = dBContext.Users.FirstOrDefault(x=>x.Email == logInModel.Email && x.Password == Encrypt(logInModel.Password));
+                var user = dBContext.Users.FirstOrDefault(x => x.Email == logInModel.Email && x.Password == Encrypt(logInModel.Password));
                 if (user == null)
                 {
                     return null;
@@ -88,6 +90,51 @@ namespace BookStore.User.Service
                     Info = user,
                     Token = JwtToken(user.UserID, user.Email)
                 };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //Forgrt Password
+        public bool ForgetPassword(string email)
+        {
+            try
+            {
+                var user = dBContext.Users.FirstOrDefault(x => x.Email == email);
+                if (user == null)
+                {
+                    return false;
+                }
+                MSMQ mSMQ = new MSMQ();
+                var userId = user.UserID;
+                var token = JwtToken(userId, email);
+                mSMQ.sendData2Queue(token);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //RsetPassword
+        public bool ResetPassword(UserResetPasswordModel resetModel, string email)
+        {
+            try
+            {
+                var user = dBContext.Users.FirstOrDefault(x => x.Email == email);
+                if (user != null && resetModel.NewPassword == resetModel.ConfirmPassword)
+                {
+                    user.Password = Encrypt(resetModel.ConfirmPassword);
+                    dBContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception)
             {

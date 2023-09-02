@@ -64,12 +64,12 @@ namespace BookStore.User
             {
                 option.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer=false,
-                    ValidateAudience=false,
-                    ValidateLifetime=true,
-                    ValidateIssuerSigningKey=true,
-                    
-                    IssuerSigningKey= new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) 
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 };
 
             });
@@ -88,7 +88,7 @@ namespace BookStore.User
             app.UseAuthentication();
 
             app.UseAuthorization();
-            
+
 
             app.MapControllers();
 
