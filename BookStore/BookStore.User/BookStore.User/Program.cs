@@ -1,3 +1,9 @@
+using BookStore.User.Context;
+using BookStore.User.Interface;
+using BookStore.User.Service;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+
 namespace BookStore.User
 {
     public class Program
@@ -9,9 +15,42 @@ namespace BookStore.User
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //Swagger Authorization
+            builder.Services.AddSwaggerGen(option =>
+            {
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore.User V1", Version = "v1" });
+
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Using Authorization header with the beare schema",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer",
+
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+
+                option.AddSecurityDefinition("Bearer", securitySchema);
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {securitySchema , new[] { "Bearer" } }
+                });
+
+            });
+            //Migration
+            builder.Services.AddDbContext<UserDBContext>(ops =>
+            {
+                ops.UseSqlServer(builder.Configuration.GetConnectionString("UserDB"));
+            });
+            //Service for interface and sercice
+            builder.Services.AddTransient<IUserService, UserService>();
 
             var app = builder.Build();
 
@@ -24,8 +63,10 @@ namespace BookStore.User
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
+            
 
             app.MapControllers();
 
