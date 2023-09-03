@@ -10,5 +10,6 @@ namespace BookStore.User.Interface
         public UserLogInData UserLogIn(UserLogInModel logInModel);
         public bool ForgetPassword(string email);
         public bool ResetPassword(UserResetPasswordModel resetModel, string email);
+        public UserEntity GetUserProfile(long userId);
     }
 }

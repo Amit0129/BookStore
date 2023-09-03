@@ -18,7 +18,7 @@ namespace BookStore.User.Controllers
             this.userService = userService;
         }
         //User Register Api
-        [HttpPost]
+        [HttpPost("adduser")]
         public IActionResult User_Register(UserRegistrationModel registrationModel)
         {
             try
@@ -37,7 +37,7 @@ namespace BookStore.User.Controllers
             }
         }
         //User LogIn API 
-        [HttpPost("UserLogin")]
+        [HttpPost("userLogin")]
         public IActionResult UserLogIn(UserLogInModel logInModel)
         {
             try
@@ -56,7 +56,7 @@ namespace BookStore.User.Controllers
             }
         }
         //Forget Password
-        [HttpPost("ForgetPassword")]
+        [HttpPost("forgetpassword")]
         public IActionResult ForgetPassword(string email)
         {
             try
@@ -77,7 +77,7 @@ namespace BookStore.User.Controllers
         }
         //Reset Password
         [Authorize]
-        [HttpPut("ResetPassword")]
+        [HttpPut("resetpassword")]
         public IActionResult ResetPassword(UserResetPasswordModel resetModel)
         {
             try
@@ -89,6 +89,27 @@ namespace BookStore.User.Controllers
                     return BadRequest(new { sucess = false, message = "Reset Password Failed" });
                 }
                 return Ok(new { sucess = true, message = "Reset Password Sucessfull" });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //Get User Profile
+        [Authorize]
+        [HttpGet("display")]
+        public IActionResult GetUserProfile()
+        {
+            try
+            {
+                var userId =  long.Parse(User.FindFirst("UserId").Value);
+                var userInfo = userService.GetUserProfile(userId);
+                if (userInfo == null)
+                {
+                    return BadRequest(new { sucess = false, message = "Retrive UserProfile Failed" });
+                }
+                return Ok(new { sucess = true, message = "Retrive UserProfile Sucessfull",data = userInfo });
             }
             catch (Exception)
             {

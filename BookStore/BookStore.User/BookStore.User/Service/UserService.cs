@@ -3,6 +3,7 @@ using BookStore.User.EmailService;
 using BookStore.User.Entity;
 using BookStore.User.Interface;
 using BookStore.User.Model;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.ConstrainedExecution;
@@ -135,6 +136,24 @@ namespace BookStore.User.Service
                 {
                     return false;
                 }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //Display User
+        public UserEntity GetUserProfile(long userId)
+        {
+            try
+            {
+                var userInfo =  dBContext.Users.FirstOrDefault(x => x.UserID == userId);
+                if (userInfo == null)
+                {
+                    return null;
+                }
+                return userInfo;
             }
             catch (Exception)
             {
