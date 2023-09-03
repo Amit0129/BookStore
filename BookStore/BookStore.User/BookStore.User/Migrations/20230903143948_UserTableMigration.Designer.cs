@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStore.User.Migrations
 {
     [DbContext(typeof(UserDBContext))]
-    [Migration("20230902115439_UserTableMigration")]
+    [Migration("20230903143948_UserTableMigration")]
     partial class UserTableMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

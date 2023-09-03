@@ -22,7 +22,7 @@ namespace BookStore.User
             //Swagger Authorization
             builder.Services.AddSwaggerGen(option =>
             {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore.User V1", Version = "v1" });
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "User", Version = "v1" });
 
                 var securitySchema = new OpenApiSecurityScheme
                 {
@@ -45,7 +45,6 @@ namespace BookStore.User
                 {
                     {securitySchema , new[] { "Bearer" } }
                 });
-
             });
             //Migration
             builder.Services.AddDbContext<UserDBContext>(ops =>
@@ -71,7 +70,6 @@ namespace BookStore.User
 
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 };
-
             });
 
             var app = builder.Build();
