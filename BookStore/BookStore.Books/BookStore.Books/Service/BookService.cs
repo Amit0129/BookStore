@@ -60,7 +60,7 @@ namespace BookStore.Books.Service
             try
             {
                 var bookInfo = dBContext.Books.FirstOrDefault(x => x.BookID == bookId);
-                if (bookInfo==null)
+                if (bookInfo == null)
                 {
                     return null;
                 }
@@ -74,23 +74,44 @@ namespace BookStore.Books.Service
         }
 
         //Update Book
-        public BookEntity UpdateBookInfo(InsertBookModel updateBook,long bookId)
+        public BookEntity UpdateBookInfo(InsertBookModel updateBook, long bookId)
         {
             try
             {
                 var bookInfo = dBContext.Books.FirstOrDefault(x => x.BookID == bookId);
-                if (bookInfo ==  null)
+                if (bookInfo == null)
                 {
                     return null;
                 }
                 bookInfo.BookName = updateBook.BookName;
                 bookInfo.Description = updateBook.Description;
                 bookInfo.Author = updateBook.Author;
-                bookInfo.Quantity= updateBook.Quantity;
-                bookInfo.DiscountPrice= updateBook.DiscountPrice;
-                bookInfo.ActualPrice= updateBook.ActualPrice;
+                bookInfo.Quantity = updateBook.Quantity;
+                bookInfo.DiscountPrice = updateBook.DiscountPrice;
+                bookInfo.ActualPrice = updateBook.ActualPrice;
                 dBContext.SaveChanges();
                 return bookInfo;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        //Delete Book
+        public bool DeleteBook(long bookId)
+        {
+            try
+            {
+                var deletedBookInfo = dBContext.Books.FirstOrDefault(x => x.BookID == bookId);
+                if (deletedBookInfo == null)
+                {
+                    return false;
+                }
+                dBContext.Remove(deletedBookInfo);
+                dBContext.SaveChanges();
+                return true;
             }
             catch (Exception)
             {

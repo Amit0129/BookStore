@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BookStore.User.Controllers
 {
@@ -13,9 +14,11 @@ namespace BookStore.User.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;
+        public ResponseEntity response;
         public UserController(IUserService userService)
         {
             this.userService = userService;
+            response= new ResponseEntity();
         }
         //User Register Api
         [HttpPost("adduser")]
@@ -98,18 +101,24 @@ namespace BookStore.User.Controllers
         }
         //Get User Profile
         [Authorize]
-        [HttpGet("display")]
-        public IActionResult GetUserProfile()
+        [HttpGet("userInfo")]
+        public ResponseEntity GetUserProfile()
         {
             try
             {
                 var userId =  long.Parse(User.FindFirst("UserId").Value);
                 var userInfo = userService.GetUserProfile(userId);
+                userInfo.Password = null;
                 if (userInfo == null)
                 {
-                    return BadRequest(new { sucess = false, message = "Retrive UserProfile Failed" });
+                    response.Message = "Retrive UserProfile Failed";
+                    response.IsSucess = false;
+                    return response;
                 }
-                return Ok(new { sucess = true, message = "Retrive UserProfile Sucessfull",data = userInfo });
+                response.Data = userInfo;
+                response.Message = "Retrive UserProfile Sucessfull";
+                response.IsSucess = true;
+                return response;
             }
             catch (Exception)
             {

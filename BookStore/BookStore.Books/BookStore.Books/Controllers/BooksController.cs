@@ -13,23 +13,30 @@ namespace BookStore.Books.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService bookService;
+        public ResponseEntity response;
         public BooksController(IBookService bookService)
         {
             this.bookService = bookService;
+            response = new ResponseEntity();
         }
         //AddBooks
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult AddBook(InsertBookModel bookModel)
+        public ResponseEntity AddBook(InsertBookModel bookModel)
         {
             try
             {
                 var books = bookService.AddBook(bookModel);
                 if (books == null)
                 {
-                    return BadRequest(new { sucess = false, message = "Book Added Failed" });
+                    response.Message = "Book Added Failed";
+                    response.IsSucess = false;
+                    return response;
                 }
-                return Ok(new { sucess = true, message = "Book Added Sucessfull", data = books });
+                response.Data = books;
+                response.Message = "Book Added Sucessfull";
+                response.IsSucess = true;
+                return response;
             }
             catch (Exception)
             {
@@ -38,16 +45,21 @@ namespace BookStore.Books.Controllers
             }
         }
         [HttpGet("getallbooks")]
-        public IActionResult GetAllBooks()
+        public ResponseEntity GetAllBooks()
         {
             try
             {
                 var book = bookService.GetAllBooks();
-                if (book ==  null)
+                if (book == null)
                 {
-                    return BadRequest(new { sucess = false, message = "Retrive Failed" });
+                    response.Message = "Data Retrive Failed";
+                    response.IsSucess = false;
+                    return response;
                 }
-                return Ok(new { sucess = true, message = "Retrive Sucessfull", data = book });
+                response.Data = book;
+                response.Message = "Data Retrive Sucessfull";
+                response.IsSucess = true;
+                return response;
             }
             catch (Exception)
             {
@@ -56,17 +68,22 @@ namespace BookStore.Books.Controllers
             }
         }
         //Get book by id
-        [HttpGet("GetById/{bookId}")]
-        public IActionResult GetBookById(long bookId)
+        [HttpGet("GetById")]
+        public ResponseEntity GetBookById(long bookId)
         {
             try
             {
                 var bookInfo = bookService.GetBookById(bookId);
                 if (bookInfo == null)
                 {
-                    return BadRequest(new { sucess = false, message = "Retrive Failed" });
+                    response.Message = "Data Retrive Failed";
+                    response.IsSucess = false;
+                    return response;
                 }
-                return Ok(new { sucess = true, message = "Retrive Sucessfull", data = bookInfo });
+                response.Data = bookInfo;
+                response.Message = "Data Retrive Sucessfull";
+                response.IsSucess = true;
+                return response;
             }
             catch (Exception)
             {
@@ -75,7 +92,7 @@ namespace BookStore.Books.Controllers
             }
         }
         //Update book
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("update/{bookId}")]
         public IActionResult UpdateBookInfo(InsertBookModel updateBook, long bookId)
         {
@@ -87,6 +104,26 @@ namespace BookStore.Books.Controllers
                     return BadRequest(new { sucess = false, message = "Update Failed" });
                 }
                 return Ok(new { sucess = true, message = "Update Sucessfull", data = bookInfo });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //Delete boook
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("DeleteBook/{bookId}")]
+        public IActionResult DeleteBook(long bookId)
+        {
+            try
+            {
+                var book = bookService.DeleteBook(bookId);
+                if (book == false)
+                {
+                    return BadRequest(new { sucess = false, message = "Delete Failed" });
+                }
+                return Ok(new { sucess = true, message = "Delete Sucessfull" });
             }
             catch (Exception)
             {

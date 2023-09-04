@@ -9,6 +9,6 @@ namespace BookStore.Books.Context
         {
 
         }
-        public DbSet<BookEntity> Books { get; set; } 
+        public DbSet<BookEntity> Books { get; set; }
     }
 }
