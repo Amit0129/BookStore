@@ -12,7 +12,7 @@ namespace BookStore.Order.Services
         public async Task<BookEntity> GetBookById(long bookId)
         {
             BookEntity bookEntity = null;
-            string url = $"https://localhost:7256/api/Books/GetById?bookId={bookId}";
+            string url = $"https://localhost:7256/api/Books/GetById/{bookId}";
             HttpClient client= new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync(url);
             if (responseMessage.IsSuccessStatusCode)

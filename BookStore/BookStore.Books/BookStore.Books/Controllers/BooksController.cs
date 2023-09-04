@@ -68,7 +68,7 @@ namespace BookStore.Books.Controllers
             }
         }
         //Get book by id
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{bookId}")]
         public ResponseEntity GetBookById(long bookId)
         {
             try

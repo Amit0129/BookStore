@@ -22,7 +22,7 @@ namespace BookStore.Order.Controllers
             response= new ResponseEntity();
         }
 
-        //Get Book Details
+        //Get Book Details...
         [HttpGet("GetBookById/{bookId}")]
         public async Task<ResponseEntity> GetBookById(long bookId)
         {
@@ -46,6 +46,7 @@ namespace BookStore.Order.Controllers
                 throw;
             }
         }
+        //Get User Details...
         [HttpGet("GetUserDetails")]
         public async Task<ResponseEntity> GetUserProfile()
         {
@@ -71,5 +72,7 @@ namespace BookStore.Order.Controllers
                 throw;
             }
         }
+        //PlaceOrder
+
     }
 }
