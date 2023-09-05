@@ -73,5 +73,28 @@ namespace BookStore.Order.Services
                 throw;
             }
         }
+        //CancelOrder
+        public async Task<bool> CancelOrder(long bookId,string token)
+        {
+
+            try
+            {
+                UserEntity userInfo = await userService.GetUserProfile(token);
+                OrderEntity orderInfo = await dBContext.Ordres.FirstOrDefaultAsync(x => x.UserID == userInfo.UserID && x.BookID == bookId);
+                if (orderInfo == null)
+                {
+                    return false;
+                }
+                dBContext.Ordres.Remove(orderInfo);
+                dBContext.SaveChanges();
+                return true;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

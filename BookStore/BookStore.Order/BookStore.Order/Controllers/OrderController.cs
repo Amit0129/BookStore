@@ -22,7 +22,90 @@ namespace BookStore.Order.Controllers
             this.orderService = orderService;
             response = new ResponseEntity();
         }
+        //PlaceOrder
+        [Authorize]
+        [HttpPost("Placeorder/{bookId}/{Qty}")]
+        public async Task<ResponseEntity> PlaceOrder(long bookId, int Qty)
+        {
+            try
+            {
+                string token = Request.Headers.Authorization.ToString();
+                token = token.Substring("Bearer".Length);
+                OrderEntity order = await orderService.PlaceOrder(bookId, Qty, token);
+                if (order == null)
+                {
+                    response.IsSucess = false;
+                    response.Message = "PlaceOrder Failed";
+                    return response;
+                }
+                response.Data = order;
+                response.Message = "PlaceOrder Sucessfull";
+                response.IsSucess = true;
+                return response;
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
+        //View Order Of The User
+        [Authorize]
+        [HttpGet]
+        public async Task<ResponseEntity> ViewOrderDetails()
+        {
+            try
+            {
+                string token = Request.Headers.Authorization.ToString();
+                token = token.Substring("Bearer".Length);
+                UserEntity userInfo = await userService.GetUserProfile(token);
+                long userId = userInfo.UserID;
+                var orderInfo = await orderService.ViewOrderDetails(token);
+                if (orderInfo == null)
+                {
+                    response.Message = "Retrive Failed";
+                    response.IsSucess = false;
+                    return response;
+                }
+                else
+                {
+                    response.IsSucess = true;
+                    response.Message = "Retrive Sucessfull";
+                    response.Data = orderInfo;
+                    return response;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //CancelOrder
+        [HttpDelete("CancelOrder/{bookId}")]
+        public async Task<ResponseEntity> CancelOrder(long bookId)
+        {
+            try
+            {
+                string token = Request.Headers.Authorization.ToString();
+                token = token.Substring("Bearer".Length);
+                var cancelOrder = await orderService.CancelOrder(bookId, token);
+                if(cancelOrder == false)
+                {
+                    response.IsSucess = false;
+                    response.Message = "Cancel Order Failed";
+                    return response;
+                }
+                response.IsSucess = true;
+                response.Message = "Cancel Order Sucessfull";
+                return response;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         //Get Book Details...
         [HttpGet("GetBookById/{bookId}")]
         public async Task<ResponseEntity> GetBookById(long bookId)
@@ -66,65 +149,6 @@ namespace BookStore.Order.Controllers
                 response.Message = "Data Retrive Sucessfull";
                 response.IsSucess = true;
                 return response;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-        //PlaceOrder
-        [Authorize]
-        [HttpPost("Placeorder/{bookId}/{Qty}")]
-        public async Task<ResponseEntity> PlaceOrder(long bookId, int Qty)
-        {
-            try
-            {
-                string token = Request.Headers.Authorization.ToString();
-                token = token.Substring("Bearer".Length);
-                OrderEntity order = await orderService.PlaceOrder(bookId, Qty, token);
-                if (order == null)
-                {
-                    response.IsSucess = false;
-                    response.Message = "PlaceOrder Failed";
-                    return response;
-                }
-                response.Data = order;
-                response.Message = "PlaceOrder Sucessfull";
-                response.IsSucess = true;
-                return response;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-        //View Order Of The User
-        [Authorize]
-        [HttpGet("Orders")]
-        public async Task<ResponseEntity> ViewOrderDetails()
-        {
-            try
-            {
-                string token = Request.Headers.Authorization.ToString() ;
-                token = token.Substring("Bearer".Length);
-                UserEntity userInfo = await userService.GetUserProfile(token);
-                long userId = userInfo.UserID;
-                var orderInfo = await orderService.ViewOrderDetails(token);
-                if (orderInfo == null)
-                {
-                    response.Message = "Retrive Failed";
-                    response.IsSucess = false;
-                    return response;
-                }
-                else
-                {
-                    response.IsSucess = true;
-                    response.Message = "Retrive Sucessfull";
-                    response.Data = orderInfo;
-                    return response;
-                }
             }
             catch (Exception)
             {
