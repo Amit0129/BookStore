@@ -62,6 +62,7 @@ namespace BookStore.Order.Services
                     {
                         order.Book = await bookService.GetBookById(order.BookID);
                         order.User = userInfo;
+                        order.OrderAmount = order.OrderQty * order.Book.DiscountPrice;
                     }
                     return orderDetails;
                 }

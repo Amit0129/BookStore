@@ -100,5 +100,37 @@ namespace BookStore.Order.Controllers
                 throw;
             }
         }
+        //View Order Of The User
+        [Authorize]
+        [HttpGet("Orders")]
+        public async Task<ResponseEntity> ViewOrderDetails()
+        {
+            try
+            {
+                string token = Request.Headers.Authorization.ToString() ;
+                token = token.Substring("Bearer".Length);
+                UserEntity userInfo = await userService.GetUserProfile(token);
+                long userId = userInfo.UserID;
+                var orderInfo = await orderService.ViewOrderDetails(token);
+                if (orderInfo == null)
+                {
+                    response.Message = "Retrive Failed";
+                    response.IsSucess = false;
+                    return response;
+                }
+                else
+                {
+                    response.IsSucess = true;
+                    response.Message = "Retrive Sucessfull";
+                    response.Data = orderInfo;
+                    return response;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
