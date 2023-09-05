@@ -13,7 +13,7 @@ namespace BookStore.Order.Services
         {
             BookEntity bookEntity = null;
             string url = $"https://localhost:7256/api/Books/GetById/{bookId}";
-            HttpClient client= new HttpClient();
+            HttpClient client = new HttpClient();
             HttpResponseMessage responseMessage = await client.GetAsync(url);
             if (responseMessage.IsSuccessStatusCode)
             {

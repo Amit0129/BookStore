@@ -1,6 +1,7 @@
 ﻿using BookStore.Order.Entity;
 using BookStore.Order.Interface;
 using BookStore.Order.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace BookStore.Order.Controllers
             this.userService = userService;
             this.bookService = bookService;
             this.orderService = orderService;
-            response= new ResponseEntity();
+            response = new ResponseEntity();
         }
 
         //Get Book Details...
@@ -73,6 +74,31 @@ namespace BookStore.Order.Controllers
             }
         }
         //PlaceOrder
+        [Authorize]
+        [HttpPost("Placeorder/{bookId}/{Qty}")]
+        public async Task<ResponseEntity> PlaceOrder(long bookId, int Qty)
+        {
+            try
+            {
+                string token = Request.Headers.Authorization.ToString();
+                token = token.Substring("Bearer".Length);
+                OrderEntity order = await orderService.PlaceOrder(bookId, Qty, token);
+                if (order == null)
+                {
+                    response.IsSucess = false;
+                    response.Message = "PlaceOrder Failed";
+                    return response;
+                }
+                response.Data = order;
+                response.Message = "PlaceOrder Sucessfull";
+                response.IsSucess = true;
+                return response;
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
     }
 }

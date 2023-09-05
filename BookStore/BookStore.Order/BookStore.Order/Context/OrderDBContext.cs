@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Order.Context
 {
-    public class OrderDBContext : DbContext 
+    public class OrderDBContext : DbContext
     {
-        public OrderDBContext( DbContextOptions option) : base(option)
+        public OrderDBContext(DbContextOptions option) : base(option)
         {
 
         }

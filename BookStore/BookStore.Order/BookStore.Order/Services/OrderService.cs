@@ -1,7 +1,7 @@
 ﻿using BookStore.Order.Context;
 using BookStore.Order.Entity;
 using BookStore.Order.Interface;
-using BookStore.Order.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Order.Services
 {
@@ -16,7 +16,7 @@ namespace BookStore.Order.Services
             this.userService = userService;
             this.bookService = bookService;
         }
-        public async Task<OrderEntity> PlaceOrder(OrderRegisterModel registerModel,string token)
+        public async Task<OrderEntity> PlaceOrder(long bookId, int Qty, string token)
         {
             try
             {
@@ -24,15 +24,47 @@ namespace BookStore.Order.Services
                 OrderEntity orderInfo = new OrderEntity()
                 {
                     UserID = userInfo.UserID,
-                    BookID = registerModel.BookID,
-                    OrderQty= registerModel.OrderQty,
-                    Book = await bookService.GetBookById(registerModel.BookID),
+                    BookID = bookId,
+                    OrderQty = Qty,
+                    Book = await bookService.GetBookById(bookId),
                     User = userInfo
                 };
-                orderInfo.OrderAmount = orderInfo.Book.DiscountPrice * registerModel.OrderQty;
-                dBContext.Ordres.Add(orderInfo);
-                dBContext.SaveChanges();
-                return orderInfo;
+                orderInfo.OrderAmount = orderInfo.Book.DiscountPrice * Qty;
+                if (bookId != null && userInfo.UserID != null && Qty != 0)
+                {
+                    dBContext.Ordres.Add(orderInfo);
+                    dBContext.SaveChanges();
+                    return orderInfo;
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //View Order
+        public async Task<IEnumerable<OrderEntity>> ViewOrderDetails(string token)
+        {
+            try
+            {
+                UserEntity userInfo = await userService.GetUserProfile(token);
+                var userId = userInfo.UserID;
+                var orderDetails = await dBContext.Ordres.Where(x => x.UserID == userId).ToListAsync();
+                if (orderDetails == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    foreach (var order in orderDetails)
+                    {
+                        order.Book = await bookService.GetBookById(order.BookID);
+                        order.User = userInfo;
+                    }
+                    return orderDetails;
+                }
             }
             catch (Exception)
             {

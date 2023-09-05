@@ -25,7 +25,7 @@ namespace BookStore.Order
             //Swagger Authorization
             builder.Services.AddSwaggerGen(option =>
             {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "User", Version = "v1" });
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Order", Version = "v1" });
 
                 var securitySchema = new OpenApiSecurityScheme
                 {
@@ -89,6 +89,8 @@ namespace BookStore.Order
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
