@@ -78,6 +78,20 @@ namespace BookStore.Order
             builder.Services.AddTransient<IBookService, BookService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
 
+            //IHttpClient Factory for Books
+            var messagingBookUrl = builder.Configuration["BookBaseUrl"];
+            
+            builder.Services.AddHttpClient("BookApi", bookClient =>
+            {
+                bookClient.BaseAddress = new Uri(messagingBookUrl);
+            });
+
+            //IHttpClient Factory for User
+            var messagingUserUrl = builder.Configuration["UserBaseUrl"];
+            builder.Services.AddHttpClient("UserApi", userClient =>
+            {
+                userClient.BaseAddress = new Uri(messagingUserUrl);
+            });
 
             var app = builder.Build();
 

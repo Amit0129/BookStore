@@ -30,7 +30,7 @@ namespace BookStore.Order.Services
                     User = userInfo
                 };
                 orderInfo.OrderAmount = orderInfo.Book.DiscountPrice * Qty;
-                if (bookId != null && userInfo.UserID != null && Qty != 0)
+                if (bookId != null && userInfo.UserID != null && Qty > 0)
                 {
                     dBContext.Ordres.Add(orderInfo);
                     dBContext.SaveChanges();
