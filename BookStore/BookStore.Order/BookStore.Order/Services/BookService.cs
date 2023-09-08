@@ -16,34 +16,42 @@ namespace BookStore.Order.Services
         }
         public async Task<BookEntity> GetBookById(long bookId)
         {
-            BookEntity bookEntity = null;
-            //string url = $"https://localhost:7256/api/Books/GetById/{bookId}";
-            //HttpClient client = new HttpClient();
-            //HttpResponseMessage responseMessage = await client.GetAsync(url);
-            //if (responseMessage.IsSuccessStatusCode)
-            //{
-            //    string content = await responseMessage.Content.ReadAsStringAsync();
-            //    ResponseEntity response = JsonConvert.DeserializeObject<ResponseEntity>(content);
-            //    if (response.IsSucess)
-            //    {
-            //        bookEntity = JsonConvert.DeserializeObject<BookEntity>(response.Data.ToString());
-            //    }
-            //}
-            //return bookEntity;
-
-
-            //IHttpFactory
-            HttpResponseMessage responseMessage = await _httpMessingClient.GetAsync($"GetById/{bookId}");
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                string content = await responseMessage.Content.ReadAsStringAsync();
-                ResponseEntity response = JsonConvert.DeserializeObject<ResponseEntity>(content);
-                if (response.IsSucess)
+                BookEntity bookEntity = null;
+                //string url = $"https://localhost:7256/api/Books/GetById/{bookId}";
+                //HttpClient client = new HttpClient();
+                //HttpResponseMessage responseMessage = await client.GetAsync(url);
+                //if (responseMessage.IsSuccessStatusCode)
+                //{
+                //    string content = await responseMessage.Content.ReadAsStringAsync();
+                //    ResponseEntity response = JsonConvert.DeserializeObject<ResponseEntity>(content);
+                //    if (response.IsSucess)
+                //    {
+                //        bookEntity = JsonConvert.DeserializeObject<BookEntity>(response.Data.ToString());
+                //    }
+                //}
+                //return bookEntity;
+
+
+                //IHttpFactory
+                HttpResponseMessage responseMessage = await _httpMessingClient.GetAsync($"GetById/{bookId}");
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    bookEntity = JsonConvert.DeserializeObject<BookEntity>(response.Data.ToString());
+                    string content = await responseMessage.Content.ReadAsStringAsync();
+                    ResponseEntity response = JsonConvert.DeserializeObject<ResponseEntity>(content);
+                    if (response.IsSucess)
+                    {
+                        bookEntity = JsonConvert.DeserializeObject<BookEntity>(response.Data.ToString());
+                    }
                 }
+                return bookEntity;
             }
-            return bookEntity;
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

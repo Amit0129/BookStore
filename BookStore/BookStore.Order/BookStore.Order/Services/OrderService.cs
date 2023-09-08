@@ -38,10 +38,10 @@ namespace BookStore.Order.Services
                 }
                 return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //View Order
@@ -67,10 +67,10 @@ namespace BookStore.Order.Services
                     return orderDetails;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //CancelOrder
@@ -90,10 +90,10 @@ namespace BookStore.Order.Services
                 return true;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

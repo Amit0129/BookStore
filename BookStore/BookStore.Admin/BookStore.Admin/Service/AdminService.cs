@@ -34,10 +34,10 @@ namespace BookStore.Admin.Service
                 adminContext.SaveChanges();
                 return adminEntity;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
 
         }
@@ -61,10 +61,10 @@ namespace BookStore.Admin.Service
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Generate JWT Token=============================================
@@ -89,16 +89,22 @@ namespace BookStore.Admin.Service
         //Encription 
         public string Encrypt(string password)
         {
-            if (string.IsNullOrEmpty(password))
+            try
             {
-                return "";
+                if (string.IsNullOrEmpty(password))
+                {
+                    return "";
+                }
+                else
+                {
+                    var passwordByte = Encoding.UTF8.GetBytes(password);
+                    return Convert.ToBase64String(passwordByte);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var passwordByte = Encoding.UTF8.GetBytes(password);
-                return Convert.ToBase64String(passwordByte);
+                throw new Exception(ex.Message);
             }
-
         }
     }
 }

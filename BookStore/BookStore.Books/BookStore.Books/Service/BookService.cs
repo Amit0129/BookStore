@@ -29,10 +29,10 @@ namespace BookStore.Books.Service
                 dBContext.SaveChanges();
                 return bookEntity;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -48,10 +48,10 @@ namespace BookStore.Books.Service
                 }
                 return booksList;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Get book by id
@@ -66,10 +66,10 @@ namespace BookStore.Books.Service
                 }
                 return bookInfo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -92,10 +92,10 @@ namespace BookStore.Books.Service
                 dBContext.SaveChanges();
                 return bookInfo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -113,10 +113,10 @@ namespace BookStore.Books.Service
                 dBContext.SaveChanges();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

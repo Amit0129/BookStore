@@ -28,10 +28,10 @@ namespace BookStore.Admin.Controllers
                 }
                 return BadRequest(new ResponseModel<string> { Sucess = false, Message = "Register Failed" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         [HttpPost]
@@ -47,10 +47,10 @@ namespace BookStore.Admin.Controllers
                 }
                 return BadRequest(new ResponseModel<string> { Sucess = false, Message = "LogIn Failed" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

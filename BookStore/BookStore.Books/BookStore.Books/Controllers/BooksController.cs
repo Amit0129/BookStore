@@ -38,10 +38,10 @@ namespace BookStore.Books.Controllers
                 response.IsSucess = true;
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         [HttpGet("getallbooks")]
@@ -61,10 +61,10 @@ namespace BookStore.Books.Controllers
                 response.IsSucess = true;
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Get book by id
@@ -85,10 +85,10 @@ namespace BookStore.Books.Controllers
                 response.IsSucess = true;
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Update book
@@ -105,10 +105,10 @@ namespace BookStore.Books.Controllers
                 }
                 return Ok(new { sucess = true, message = "Update Sucessfull", data = bookInfo });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Delete boook
@@ -125,10 +125,10 @@ namespace BookStore.Books.Controllers
                 }
                 return Ok(new { sucess = true, message = "Delete Sucessfull" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

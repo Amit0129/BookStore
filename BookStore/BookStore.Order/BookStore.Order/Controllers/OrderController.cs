@@ -43,10 +43,10 @@ namespace BookStore.Order.Controllers
                 response.IsSucess = true;
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //View Order Of The User
@@ -75,10 +75,10 @@ namespace BookStore.Order.Controllers
                     return response;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //CancelOrder
@@ -100,10 +100,10 @@ namespace BookStore.Order.Controllers
                 response.Message = "Cancel Order Sucessfull";
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Get Book Details...
@@ -124,10 +124,10 @@ namespace BookStore.Order.Controllers
                 response.IsSucess = true;
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Get User Details...
@@ -150,10 +150,10 @@ namespace BookStore.Order.Controllers
                 response.IsSucess = true;
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

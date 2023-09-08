@@ -33,10 +33,10 @@ namespace BookStore.User.Controllers
                 }
                 return BadRequest(new { sucess = false, message = "Register Failed" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //User LogIn API 
@@ -52,10 +52,10 @@ namespace BookStore.User.Controllers
                 }
                 return Ok(new { sucess = true, message = "LogIn Sucessfull", data = user });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Forget Password
@@ -71,10 +71,10 @@ namespace BookStore.User.Controllers
                 }
                 return Ok(new { sucess = true, message = "Forget Password Email Send Sucessfull" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
 
         }
@@ -93,10 +93,10 @@ namespace BookStore.User.Controllers
                 }
                 return Ok(new { sucess = true, message = "Reset Password Sucessfull" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Get User Profile
@@ -120,10 +120,10 @@ namespace BookStore.User.Controllers
                 response.IsSucess = true;
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

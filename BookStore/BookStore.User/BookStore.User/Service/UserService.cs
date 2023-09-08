@@ -42,16 +42,23 @@ namespace BookStore.User.Service
         //Encription 
         public string Encrypt(string password)
         {
-            if (string.IsNullOrEmpty(password))
+            try
             {
-                return null;
+                if (string.IsNullOrEmpty(password))
+                {
+                    return null;
+                }
+                else
+                {
+                    var passwordByte = Encoding.UTF8.GetBytes(password);
+                    return Convert.ToBase64String(passwordByte);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var passwordByte = Encoding.UTF8.GetBytes(password);
-                return Convert.ToBase64String(passwordByte);
-            }
 
+                throw new Exception(ex.Message);
+            }
         }
         //User Registration
         public UserEntity User_Register(UserRegistrationModel registrationModel)
@@ -70,10 +77,10 @@ namespace BookStore.User.Service
                 dBContext.SaveChanges();
                 return userEntity;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //User LogIn
@@ -92,10 +99,10 @@ namespace BookStore.User.Service
                     Token = JwtToken(user.UserID, user.Email)
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Forgrt Password
@@ -114,10 +121,10 @@ namespace BookStore.User.Service
                 mSMQ.sendData2Queue(token);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //RsetPassword
@@ -137,10 +144,10 @@ namespace BookStore.User.Service
                     return false;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         //Display User
@@ -155,10 +162,10 @@ namespace BookStore.User.Service
                 }
                 return userInfo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }
