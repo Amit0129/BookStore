@@ -5,6 +5,9 @@ using BookStore.Books.Model;
 
 namespace BookStore.Books.Service
 {
+    /// <summary>
+    /// Book service
+    /// </summary>
     public class BookService : IBookService
     {
         private readonly BookDBContext dBContext;
@@ -12,6 +15,11 @@ namespace BookStore.Books.Service
         {
             this.dBContext = dBContext;
         }
+        /// <summary>
+        /// Add book 
+        /// </summary>
+        /// <param name="book">Insertbook Model</param>
+        /// <returns>Book info</returns>
         public BookEntity AddBook(InsertBookModel book)
         {
             try
@@ -36,7 +44,10 @@ namespace BookStore.Books.Service
             }
         }
 
-        //GetAllBooks
+        /// <summary>
+        /// Get all book deatils
+        /// </summary>
+        /// <returns>All book Details</returns>
         public IEnumerable<BookEntity> GetAllBooks()
         {
             try
@@ -54,7 +65,11 @@ namespace BookStore.Books.Service
                 throw new Exception(ex.Message);
             }
         }
-        //Get book by id
+        /// <summary>
+        /// Get book details by book id
+        /// </summary>
+        /// <param name="bookId">Exiting book BookId</param>
+        /// <returns>Book Details</returns>
         public BookEntity GetBookById(long bookId)
         {
             try
@@ -73,7 +88,12 @@ namespace BookStore.Books.Service
             }
         }
 
-        //Update Book
+        /// <summary>
+        /// Update book
+        /// </summary>
+        /// <param name="updateBook">Book model</param>
+        /// <param name="bookId">Exiting book id/param>
+        /// <returns>Updated book Details</returns>
         public BookEntity UpdateBookInfo(InsertBookModel updateBook, long bookId)
         {
             try
@@ -99,7 +119,11 @@ namespace BookStore.Books.Service
             }
         }
 
-        //Delete Book
+        /// <summary>
+        /// Delete Book details
+        /// </summary>
+        /// <param name="bookId">Exiting book id</param>
+        /// <returns>boolean value for sucess of failuer</returns>
         public bool DeleteBook(long bookId)
         {
             try

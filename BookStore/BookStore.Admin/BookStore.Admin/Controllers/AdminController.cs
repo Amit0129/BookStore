@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStore.Admin.Controllers
 {
+    /// <summary>
+    /// Admin Controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -15,6 +18,11 @@ namespace BookStore.Admin.Controllers
         {
             this.adminService = adminService;
         }
+        /// <summary>
+        /// Admin register controller Endpoint
+        /// </summary>
+        /// <param name="adminRegister">Register model</param>
+        /// <returns>SMD Format</returns>
         [HttpPost]
         [Route("/Register")]
         public IActionResult Registration(AdminRegister adminRegister)
@@ -34,6 +42,11 @@ namespace BookStore.Admin.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// Admin login controller Endpoint
+        /// </summary>
+        /// <param name="adminLogin">Login Model</param>
+        /// <returns>SMD Format</returns>
         [HttpPost]
         [Route("/Login")]
         public IActionResult AdminLogin(AdminLogin adminLogin)

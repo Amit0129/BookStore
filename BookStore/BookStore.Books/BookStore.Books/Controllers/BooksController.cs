@@ -8,6 +8,9 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BookStore.Books.Controllers
 {
+    /// <summary>
+    /// Book controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class BooksController : ControllerBase
@@ -19,7 +22,11 @@ namespace BookStore.Books.Controllers
             this.bookService = bookService;
             response = new ResponseEntity();
         }
-        //AddBooks
+        /// <summary>
+        /// Add book to database controller Endpoint
+        /// </summary>
+        /// <param name="bookModel">AddBook model</param>
+        /// <returns>Book info In Response Model Format</returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public ResponseEntity AddBook(InsertBookModel bookModel)
@@ -44,6 +51,10 @@ namespace BookStore.Books.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// Get All book from database Controller EndPoint
+        /// </summary>
+        /// <returns>All book info</returns>
         [HttpGet("getallbooks")]
         public ResponseEntity GetAllBooks()
         {
@@ -67,7 +78,11 @@ namespace BookStore.Books.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        //Get book by id
+        /// <summary>
+        /// Get a particular book Info from database Controller EndPoint
+        /// </summary>
+        /// <param name="bookId">Book id</param>
+        /// <returns>Book Info In Response model Format</returns>
         [HttpGet("GetById/{bookId}")]
         public ResponseEntity GetBookById(long bookId)
         {
@@ -91,7 +106,13 @@ namespace BookStore.Books.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        //Update book
+        /// <summary>
+        /// Update Book Info
+        /// </summary>
+        /// <param name="updateBook">Update Model</param>
+        /// <param name="bookId">book id</param>
+        /// <returns>Book Details with SMD Formart</returns>
+        /// <exception cref="Exception"></exception>
         [Authorize(Roles = "Admin")]
         [HttpPut("update/{bookId}")]
         public IActionResult UpdateBookInfo(InsertBookModel updateBook, long bookId)
@@ -111,7 +132,11 @@ namespace BookStore.Books.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        //Delete boook
+        /// <summary>
+        /// Delete a book
+        /// </summary>
+        /// <param name="bookId">Book id</param>
+        /// <returns>Boolean for sucess or not In SMD Formart</returns>
         [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteBook/{bookId}")]
         public IActionResult DeleteBook(long bookId)

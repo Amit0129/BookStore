@@ -6,6 +6,9 @@ using System.Net.Http.Headers;
 
 namespace BookStore.Order.Services
 {
+    /// <summary>
+    /// Order Service
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly HttpClient httpClient;
@@ -13,6 +16,11 @@ namespace BookStore.Order.Services
         {
             httpClient = httpClientFactory.CreateClient("UserApi");
         }
+        /// <summary>
+        /// Gettting user info from User project using HttpClient And IhttpClient Faactory (MicroService)
+        /// </summary>
+        /// <param name="token">Jwt token from header</param>
+        /// <returns>Book Info</returns>
         public async Task<UserEntity> GetUserProfile(string token)
         {
             try

@@ -7,6 +7,9 @@ using static System.Net.WebRequestMethods;
 
 namespace BookStore.Order.Services
 {
+    /// <summary>
+    /// Book service
+    /// </summary>
     public class BookService : IBookService
     {
         private readonly HttpClient _httpMessingClient;
@@ -14,6 +17,11 @@ namespace BookStore.Order.Services
         {
             _httpMessingClient = httpClientFactory.CreateClient("BookApi");//A method CreateClient which return the http client Object
         }
+        /// <summary>
+        /// Gettting book info from book project using HttpClient And IhttpClient Faactory (MicroService)
+        /// </summary>
+        /// <param name="bookId">Exition Book Id</param>
+        /// <returns>Book Info</returns>
         public async Task<BookEntity> GetBookById(long bookId)
         {
             try

@@ -12,6 +12,9 @@ namespace BookStore.Admin.Service
 {
     public class AdminService : IAdminService
     {
+        /// <summary>
+        /// Admin Service Layer 
+        /// </summary>
         private readonly AdminContext adminContext;
         public readonly IConfiguration configuration;
         public AdminService(AdminContext adminContext, IConfiguration configuration)
@@ -19,6 +22,11 @@ namespace BookStore.Admin.Service
             this.adminContext = adminContext;
             this.configuration = configuration;
         }
+        /// <summary>
+        /// New Admin register
+        /// </summary>
+        /// <param name="adminRegister">Registration Model</param>
+        /// <returns>Admin Entity Model</returns>
         public AdminEntity Registration(AdminRegister adminRegister)
         {
             try
@@ -41,6 +49,12 @@ namespace BookStore.Admin.Service
             }
 
         }
+        /// <summary>
+        /// Admin Login
+        /// </summary>
+        /// <param name="adminLogin">Login Model</param>
+        /// <returns>Admin Info and JWT token</returns>
+        /// <exception cref="Exception"></exception>
         public AdminLoginDeatils AdminLogin(AdminLogin adminLogin)
         {
             try
@@ -67,7 +81,13 @@ namespace BookStore.Admin.Service
                 throw new Exception(ex.Message);
             }
         }
-        //Generate JWT Token=============================================
+        
+        /// <summary>
+        /// Create Jwt Token
+        /// </summary>
+        /// <param name="adminId">An exiting admin ID</param>
+        /// <param name="email">Email of the admin</param>
+        /// <returns>Jwt Token</returns>
         public string JWTTokenGenerator(long adminId, string email)
         {
             var tokenHanler = new JwtSecurityTokenHandler();
@@ -86,7 +106,11 @@ namespace BookStore.Admin.Service
             var token = tokenHanler.CreateToken(tokenDescriptor);
             return tokenHanler.WriteToken(token);
         }
-        //Encription 
+        /// <summary>
+        /// Encrypt password
+        /// </summary>
+        /// <param name="password">Admin Password</param>
+        /// <returns>Encreypted password</returns>
         public string Encrypt(string password)
         {
             try

@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Order.Services
 {
+    /// <summary>
+    /// Order service class
+    /// </summary>
     public class OrderService : IOrderService
     {
         private readonly OrderDBContext dBContext;
@@ -16,6 +19,13 @@ namespace BookStore.Order.Services
             this.userService = userService;
             this.bookService = bookService;
         }
+        /// <summary>
+        /// Add Order to data base
+        /// </summary>
+        /// <param name="bookId">Exiting Book id</param>
+        /// <param name="Qty">Number of book</param>
+        /// <param name="token">Jwt Toket Get from header</param>
+        /// <returns>Order Details</returns>
         public async Task<OrderEntity> PlaceOrder(long bookId, int Qty, string token)
         {
             try
@@ -44,7 +54,11 @@ namespace BookStore.Order.Services
                 throw new Exception(ex.Message);
             }
         }
-        //View Order
+        /// <summary>
+        /// View an Order
+        /// </summary>
+        /// <param name="token">Jwt Toket Get from header</param>
+        /// <returns>Order Deatils</returns>
         public async Task<IEnumerable<OrderEntity>> ViewOrderDetails(string token)
         {
             try
@@ -73,7 +87,12 @@ namespace BookStore.Order.Services
                 throw new Exception(ex.Message);
             }
         }
-        //CancelOrder
+        /// <summary>
+        /// Cancel Order
+        /// </summary>
+        /// <param name="bookId">Orderd Book Id</param>
+        /// <param name="token">Jwt Toket Get from header</param>
+        /// <returns>Cancel Order info</returns>
         public async Task<bool> CancelOrder(long bookId,string token)
         {
 

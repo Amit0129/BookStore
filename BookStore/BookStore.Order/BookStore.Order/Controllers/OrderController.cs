@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStore.Order.Controllers
 {
+    /// <summary>
+    /// Order Crotroller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
@@ -22,7 +25,12 @@ namespace BookStore.Order.Controllers
             this.orderService = orderService;
             response = new ResponseEntity();
         }
-        //PlaceOrder
+        /// <summary>
+        /// Place Order
+        /// </summary>
+        /// <param name="bookId">Exiting book id</param>
+        /// <param name="Qty">Quantity of book</param>
+        /// <returns>Order Information</returns>
         [Authorize]
         [HttpPost("Placeorder/{bookId}/{Qty}")]
         public async Task<ResponseEntity> PlaceOrder(long bookId, int Qty)
@@ -49,7 +57,10 @@ namespace BookStore.Order.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        //View Order Of The User
+        /// <summary>
+        /// View Order details of a user
+        /// </summary>
+        /// <returns>Order details of a user</returns>
         [Authorize]
         [HttpGet]
         public async Task<ResponseEntity> ViewOrderDetails()
@@ -81,7 +92,11 @@ namespace BookStore.Order.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        //CancelOrder
+       /// <summary>
+       /// Cancel order of a user
+       /// </summary>
+       /// <param name="bookId">book id from a placed order</param>
+       /// <returns>Boolean value for sucess of failure </returns>
         [HttpDelete("CancelOrder/{bookId}")]
         public async Task<ResponseEntity> CancelOrder(long bookId)
         {
@@ -106,7 +121,11 @@ namespace BookStore.Order.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        //Get Book Details...
+        /// <summary>
+        /// Get book deatils by id
+        /// </summary>
+        /// <param name="bookId">Exiting book Id</param>
+        /// <returns>Book details</returns>
         [HttpGet("GetBookById/{bookId}")]
         public async Task<ResponseEntity> GetBookById(long bookId)
         {
@@ -130,7 +149,10 @@ namespace BookStore.Order.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        //Get User Details...
+        /// <summary>
+        /// Get user details of login user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetUserDetails")]
         public async Task<ResponseEntity> GetUserProfile()
         {
