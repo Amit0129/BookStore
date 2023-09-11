@@ -12,6 +12,9 @@ using System.Text;
 
 namespace BookStore.User.Service
 {
+    /// <summary>
+    /// User Service
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly UserDBContext dBContext;
@@ -21,7 +24,12 @@ namespace BookStore.User.Service
             this.dBContext = dBContext;
             this.configuration = configuration;
         }
-        //Jwt Token
+        /// <summary>
+        /// Create Jwt token
+        /// </summary>
+        /// <param name="userId">User Id of a user</param>
+        /// <param name="email">Email Id of user</param>
+        /// <returns>Jwt token</returns>
         public string JwtToken(long userId, string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -39,7 +47,11 @@ namespace BookStore.User.Service
             var token = tokenHandler.CreateToken(tikenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        //Encription 
+        /// <summary>
+        /// Encreption Method
+        /// </summary>
+        /// <param name="password">User Password</param>
+        /// <returns>Encrypted Password</returns>
         public string Encrypt(string password)
         {
             try
@@ -60,7 +72,11 @@ namespace BookStore.User.Service
                 throw new Exception(ex.Message);
             }
         }
-        //User Registration
+        /// <summary>
+        /// User Registration
+        /// </summary>
+        /// <param name="registrationModel">Registration model</param>
+        /// <returns>User Deatils</returns>
         public UserEntity User_Register(UserRegistrationModel registrationModel)
         {
             try
@@ -83,7 +99,11 @@ namespace BookStore.User.Service
                 throw new Exception(ex.Message);
             }
         }
-        //User LogIn
+        /// <summary>
+        /// User Log in
+        /// </summary>
+        /// <param name="logInModel">Login Model</param>
+        /// <returns>User info with Jwt Token</returns>
         public UserLogInData UserLogIn(UserLogInModel logInModel)
         {
             try
@@ -105,7 +125,11 @@ namespace BookStore.User.Service
                 throw new Exception(ex.Message);
             }
         }
-        //Forgrt Password
+        /// <summary>
+        /// Forget password
+        /// </summary>
+        /// <param name="email">User Email Id</param>
+        /// <returns>Send token to user email for </returns>
         public bool ForgetPassword(string email)
         {
             try
