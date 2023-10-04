@@ -27,25 +27,45 @@ namespace BookStore.Order.Services
             {
                 var bookInfo = bookService.GetBookById(bookId);
                 UserEntity userInfo = await userService.GetUserProfile(token);
-                var wishList = new WishListEntity()
+                if (userInfo != null)
                 {
-                    UserID = userInfo.UserID,
-                    BookID = bookId,
-                    Book = await bookService.GetBookById(bookId),
-                    User = userInfo
-                };
-                if (bookId != null && userInfo.UserID != null)
-                {
-                    context.WishLists.Add(wishList);
-                    context.SaveChanges();
-                    return wishList;
+                    var wishList = new WishListEntity()
+                    {
+                        UserID = userInfo.UserID,
+                        BookID = bookId,
+                        Book = await bookService.GetBookById(bookId),
+                        User = userInfo
+                    };
+                    if (bookId != null && userInfo.UserID != null)
+                    {
+                        context.WishLists.Add(wishList);
+                        context.SaveChanges();
+                        return wishList;
+                    }
                 }
+                
                 return null;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<IEnumerable<WishListEntity>> GetWishList(string token)
+        {
+            UserEntity userInfo = await userService.GetUserProfile(token);
+            var wishListDetails = context.WishLists.Where(x=>x.UserID == userInfo.UserID).ToList();
+            if (wishListDetails == null)
+            {
+                return null;
+            }
+            foreach (var item in wishListDetails)
+            {
+                item.Book = await bookService.GetBookById(item.BookID);
+                item.User = userInfo;
+            }
+            return wishListDetails;
         }
     }
 }

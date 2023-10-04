@@ -44,5 +44,30 @@ namespace BookStore.Order.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        [HttpGet("GetWishList")]
+        public async Task<ResponseEntity> GetWishList()
+        {
+            try
+            {
+                string token = Request.Headers.Authorization.ToString();
+                token = token.Substring("Bearer".Length);
+                var wishList = await wishListService.GetWishList(token);
+                if (wishList == null)
+                {
+                    response.IsSucess = false;
+                    response.Message = "Get Wishlist of user Failed";
+                    return response;
+                }
+                response.IsSucess = true;
+                response.Message = "Get Wishlist of user Sucessfull";
+                response.Data = wishList;
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
