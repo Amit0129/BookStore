@@ -27,14 +27,14 @@ namespace BookStore.Order.Controllers
                 string token = Request.Headers.Authorization.ToString();
                 token = token.Substring("Bearer".Length);
                 WishListEntity wishList = await wishListService.AddToWishList(bookId, token);
-                if (wishListService == null)
+                if (wishList == null)
                 {
                     response.IsSucess = false;
-                    response.Message = "Add to WishList Failed";
+                    response.Message = "Add to WishList Failed Or You Alredy The Book to WishList";
                     return response;
                 }
                 response.Data = wishList;
-                response.Message = "PlaceOrder Sucessfull";
+                response.Message = "Add to WishList Sucessfull";
                 response.IsSucess = true;
                 return response;
             }
@@ -66,6 +66,30 @@ namespace BookStore.Order.Controllers
             catch (Exception ex)
             {
 
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpDelete("Delete/{bookId}")]
+        public async Task<ResponseEntity> DeleteWishList(long bookId)
+        {
+            try
+            {
+                string token = Request.Headers.Authorization.ToString();
+                token = token.Substring("Bearer".Length);
+                var result = await wishListService.DeleteWishList(bookId, token);
+                if (result)
+                {
+                    response.IsSucess = true;
+                    response.Message = "WishList Remove Sucessfull";
+                    return response;
+                }
+                response.IsSucess= false;
+                response.Message = "WishList Remove Failed";
+                return response;
+
+            }
+            catch (Exception ex)
+            {
                 throw new Exception(ex.Message);
             }
         }

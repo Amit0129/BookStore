@@ -1,6 +1,7 @@
 ﻿using BookStore.Order.Context;
 using BookStore.Order.Entity;
 using BookStore.Order.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Order.Services
 {
@@ -36,14 +37,14 @@ namespace BookStore.Order.Services
                         Book = await bookService.GetBookById(bookId),
                         User = userInfo
                     };
-                    if (bookId != null && userInfo.UserID != null)
+                    var presentAlredy = await context.WishLists.FirstOrDefaultAsync(x => x.BookID == wishList.BookID && x.UserID == wishList.UserID);
+                    if (bookId != null && userInfo.UserID != null && presentAlredy == null)
                     {
                         context.WishLists.Add(wishList);
                         context.SaveChanges();
                         return wishList;
                     }
                 }
-                
                 return null;
             }
             catch (Exception ex)
@@ -52,10 +53,11 @@ namespace BookStore.Order.Services
             }
         }
 
+        
         public async Task<IEnumerable<WishListEntity>> GetWishList(string token)
         {
             UserEntity userInfo = await userService.GetUserProfile(token);
-            var wishListDetails = context.WishLists.Where(x=>x.UserID == userInfo.UserID).ToList();
+            var wishListDetails = await context.WishLists.Where(x=>x.UserID == userInfo.UserID).ToListAsync();
             if (wishListDetails == null)
             {
                 return null;
@@ -67,5 +69,20 @@ namespace BookStore.Order.Services
             }
             return wishListDetails;
         }
+
+        public async Task<bool> DeleteWishList(long bookId, string token)
+        {
+            UserEntity userInfo = await userService.GetUserProfile(token);
+            var wishListInfo = await context.WishLists.FirstOrDefaultAsync(x => x.BookID == bookId && x.UserID == userInfo.UserID);
+            if (wishListInfo == null)
+            {
+                return false;
+            }
+
+            context.WishLists.Remove(wishListInfo);
+            context.SaveChanges();
+            return true;
+        }
+
     }
 }
