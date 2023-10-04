@@ -10,5 +10,6 @@ namespace BookStore.Order.Context
 
         }
         public DbSet<OrderEntity> Ordres { get; set; }
+        public DbSet<WishListEntity> WishLists { get; set; }
     }
 }

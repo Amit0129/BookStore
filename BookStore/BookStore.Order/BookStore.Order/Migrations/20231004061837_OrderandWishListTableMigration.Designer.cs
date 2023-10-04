@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStore.Order.Migrations
 {
     [DbContext(typeof(OrderDBContext))]
-    [Migration("20230904084207_OrderTableMigration")]
-    partial class OrderTableMigration
+    [Migration("20231004061837_OrderandWishListTableMigration")]
+    partial class OrderandWishListTableMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,25 @@ namespace BookStore.Order.Migrations
                     b.HasKey("OrderID");
 
                     b.ToTable("Ordres");
+                });
+
+            modelBuilder.Entity("BookStore.Order.Entity.WishListEntity", b =>
+                {
+                    b.Property<long>("WishListID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("WishListID"), 1L, 1);
+
+                    b.Property<long>("BookID")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("WishListID");
+
+                    b.ToTable("WishLists");
                 });
 #pragma warning restore 612, 618
         }

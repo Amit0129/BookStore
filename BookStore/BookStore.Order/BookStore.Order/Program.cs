@@ -77,6 +77,7 @@ namespace BookStore.Order
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IBookService, BookService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
+            builder.Services.AddTransient<IWishListService, WishListService>();
 
             //IHttpClient Factory for Books
             var messagingBookUrl = builder.Configuration["BookBaseUrl"];
